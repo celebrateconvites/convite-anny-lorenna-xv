@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anny Lorenna | 15 anos</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Italiana&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --black: #08070a;
+  --pink: #fa45c8;
+  --silver: #ded9e5;
+  --muted: #aaa4b1;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  background: var(--black);
+  color: var(--silver);
+  font-family: "DM Sans", sans-serif;
+}
+
+body {
+  overflow: hidden;
+}
+
+button, a {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 22px;
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(250,69,200,.09), transparent 48%),
+    var(--black);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .8s ease, visibility .8s ease;
+  overflow-y: auto;
+}
+
+.screen.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* ABERTURA — GLOBO ESPELHADO */
+
+.intro {
+  text-align: center;
+  gap: 28px;
+}
+
+.eyebrow {
+  color: var(--pink);
+  font-size: 10px;
+  letter-spacing: .42em;
+  text-transform: uppercase;
+}
+
+.disco-wrap {
+  position: relative;
+  width: min(57vw, 230px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  margin: 8px 0;
+}
+
+.disco-wrap::before,
+.disco-wrap::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  inset: -20%;
+  border: 1px solid rgba(250,69,200,.15);
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.disco-wrap::after {
+  inset: -35%;
+  border-color: rgba(222,217,229,.09);
+  animation-delay: 1s;
+}
+
+.disco {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 15px, rgba(5,5,8,.75) 16px 18px),
+    repeating-linear-gradient(90deg, transparent 0 15px, rgba(5,5,8,.8) 16px 18px),
+    conic-gradient(from 20deg,
+      #f8f5ff, #7c7888, #fff, #b2a9c2,
+      #24212b, #fff, #fa45c8, #a5a0ad, #f7f4ff);
+  box-shadow:
+    inset -22px -18px 30px rgba(0,0,0,.8),
+    inset 12px 10px 25px rgba(255,255,255,.7),
+    0 0 40px rgba(250,69,200,.22);
+  transform: rotate(-12deg);
+}
+
+.disco::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 22%,
+    rgba(255,255,255,.95), transparent 13%),
+    linear-gradient(125deg, transparent 25%, rgba(255,255,255,.48) 35%,
+    transparent 47%, rgba(250,69,200,.3) 65%, transparent 78%);
+}
+
+.disco::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, transparent 52%, rgba(0,0,0,.5) 100%);
+}
+
+.intro.entered .disco {
+  animation: spin 7s linear infinite;
+}
+
+h1, h2, .serif {
+  font-family: "Italiana", serif;
+  font-weight: 400;
+}
+
+.intro h1 {
+  font-size: clamp(34px, 8vw, 54px);
+  letter-spacing: .02em;
+}
+
+.intro p {
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: .12em;
+}
+
+.enter-button {
+  margin-top: 10px;
+  border: 1px solid rgba(250,69,200,.8);
+  color: var(--silver);
+  background: rgba(250,69,200,.06);
+  padding: 15px 30px;
+  letter-spacing: .2em;
+  font-size: 10px;
+  text-transform: uppercase;
+  transition: .3s ease;
+}
+
+.enter-button:hover {
+  background: var(--pink);
+  color: var(--black);
+  box-shadow: 0 0 30px rgba(250,69,200,.25);
+}
+
+/* FOTO DA ANNY */
+
+.photo-screen {
+  padding: 0;
+  background: #08070a;
+  overflow: hidden;
+}
+
+.photo-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(0deg,
+    rgba(8,7,10,.96) 0%,
+    rgba(8,7,10,.2) 44%,
+    rgba(8,7,10,.18) 75%,
+    rgba(8,7,10,.55) 100%);
+  pointer-events: none;
+}
+
+.portrait {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  animation: photoZoom 12s ease-in-out forwards;
+}
+
+.photo-copy {
+  position: absolute;
+  z-index: 2;
+  bottom: max(11%, 55px);
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 24px;
+  animation: rise 1.5s ease both;
+}
+
+.photo-copy .eyebrow {
+  margin-bottom: 14px;
+}
+
+.photo-copy h2 {
+  font-size: clamp(44px, 11vw, 72px);
+  line-height: 1.02;
+  color: #fff;
+  text-shadow: 0 2px 30px rgba(0,0,0,.45);
+}
+
+.photo-copy p {
+  margin-top: 16px;
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #eee8f0;
+}
+
+.next-button {
+  position: absolute;
+  z-index: 3;
+  bottom: 25px;
+  right: 24px;
+  border: 0;
+  background: transparent;
+  color: white;
+  letter-spacing: .14em;
+  font-size: 10px;
+  text-transform: uppercase;
+  padding: 12px;
+}
+
+/* CONVITE FINAL */
+
+.invitation {
+  justify-content: flex-start;
+  text-align: center;
+  padding: 45px 24px 35px;
+}
+
+.invitation-inner {
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+}
+
+.small-line {
+  width: 42px;
+  height: 1px;
+  background: var(--pink);
+  margin: 22px auto;
+}
+
+.invitation h2 {
+  font-size: clamp(43px, 10vw, 66px);
+  line-height: 1;
+  color: #f7f2fa;
+}
+
+.invitation .subtitle {
+  color: var(--pink);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .35em;
+  margin-top: 12px;
+}
+
+.invitation .message {
+  max-width: 300px;
+  margin: 20px auto 24px;
+  color: #c5becb;
+  font-size: 13px;
+  line-height: 1.8;
+  font-weight: 300;
+}
+
+.date {
+  font-family: "Italiana", serif;
+  font-size: 29px;
+  color: white;
+  letter-spacing: .06em;
+}
+
+.time {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+
+.venue {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #f6eff8;
+}
+
+.address {
+  margin: 7px auto 0;
+  max-width: 300px;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.action {
+  min-height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 12px 8px;
+  border: 1px solid rgba(222,217,229,.3);
+  background: rgba(255,255,255,.02);
+  color: var(--silver);
+  text-decoration: none;
+  font-size: 10px;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  transition: .25s ease;
+}
+
+.action:hover {
+  border-color: var(--pink);
+  color: var(--pink);
+}
+
+.action.primary {
+  border-color: var(--pink);
+  background: var(--pink);
+  color: #130811;
+  grid-column: 1 / -1;
+  font-weight: 600;
+}
+
+.action.primary:hover {
+  background: transparent;
+  color: var(--pink);
+}
+
+.footer-note {
+  margin-top: 24px;
+  color: #77717e;
+  font-size: 9px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+/* MODAL DRESS CODE */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0,0,0,.82);
+  opacity: 0;
+  visibility: hidden;
+  transition: .3s ease;
+}
+
+.modal.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-box {
+  width: 100%;
+  max-width: 330px;
+  padding: 34px 24px;
+  text-align: center;
+  background: #100d13;
+  border: 1px solid rgba(250,69,200,.45);
+  box-shadow: 0 0 50px rgba(250,69,200,.08);
+}
+
+.modal-box h2 {
+  font-size: 36px;
+  margin: 14px 0;
+}
+
+.modal-box p {
+  font-size: 13px;
+  line-height: 1.8;
+  color: #c8c0ce;
+}
+
+.close-modal {
+  margin-top: 24px;
+  padding: 12px 25px;
+  border: 1px solid var(--pink);
+  color: var(--silver);
+  background: transparent;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+/* CONTROLE DA MÚSICA */
+
+.music-control {
+  position: fixed;
+  z-index: 5;
+  top: 18px;
+  right: 18px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(222,217,229,.35);
+  background: rgba(8,7,10,.55);
+  color: var(--silver);
+  display: none;
+  place-items: center;
+  font-size: 15px;
+}
+
+.music-control.visible {
+  display: grid;
+}
+
+@keyframes spin {
+  to { transform: rotate(348deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: .65; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+
+@keyframes photoZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-height: 720px) {
+  .invitation { padding-top: 28px; padding-bottom: 22px; }
+  .small-line { margin: 15px auto; }
+  .invitation .message { margin: 13px auto 17px; }
+  .buttons { margin-top: 19px; }
+  .footer-note { margin-top: 17px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" src="./musica.mp3" loop preload="auto" autoplay playsinline></audio></audio>
+
+<button id="musicControl" class="music-control" aria-label="Pausar ou tocar música" title="Música">♫</button>
+
+<!-- TELA 1: ABERTURA -->
+<section id="screen1" class="screen intro active">
+  <div class="eyebrow">Let's dance</div>
+
+  <div class="disco-wrap">
+    <div class="disco"></div>
+  </div>
+
+  <h1>Anny Lorenna</h1>
+  <p>15 anos • Disco Party</p>
+
+  <button id="enterButton" class="enter-button">Tocar para entrar</button>
+</section>
+
+<!-- TELA 2: FOTO -->
+<section id="screen2" class="screen photo-screen">
+  <img
+    class="portrait"
+    src="./anny.jpg.jpeg"
+    alt="Retrato de Anny Lorenna"
+    onerror="this.style.display='none'; document.getElementById('photoError').style.display='block';"
+  >
+
+  <div id="photoError" style="display:none;position:absolute;z-index:2;top:25%;left:10%;right:10%;text-align:center;color:#ded9e5;font-size:13px;line-height:1.8;">
+    Não foi possível carregar a foto.<br>
+    Confira se o arquivo se chama <strong>anny.jpg</strong><br>
+    e está na mesma pasta do index.html.
+  </div>
+
+  <div class="photo-copy">
+    <div class="eyebrow" style="color: #ffffff;">Uma noite inesquecível</div>
+    <h2>XV<br>15 anos</h2>
+    <p>Quero celebrar com você</p>
+  </div>
+
+  <button id="nextButton" class="next-button">Ver convite &nbsp; →</button>
+</section>
+
+<!-- TELA 3: CONVITE -->
+<section id="screen3" class="screen invitation">
+  <div class="invitation-inner">
+    <div class="eyebrow">Você é meu convidado especial</div>
+    <div class="small-line"></div>
+
+    <h2>Anny Lorenna</h2>
+    <div class="subtitle"></div>
+
+    <p class="message">
+      Uma noite especial merece pessoas especiais.
+      Sua presença fará parte dessa lembrança para sempre.
+      Venha celebrar comigo!
+    </p>
+
+    <div class="date">21 NOV 2026</div>
+    <div class="time">Sábado · às 21h</div>
+
+    <div class="small-line"></div>
+
+    <div class="venue">Éden Recepções</div>
+    <p class="address">
+      Avenida Antoine de Saint-Exupéry, 1035<br>
+      Pitimbu · Natal — RN<br>
+      CEP 59066-430
+    </p>
+
+    <div class="buttons">
+      <a class="action"
+         href="https://www.google.com/maps/search/?api=1&query=Eden+Recepcoes%2C+Avenida+Antoine+de+Saint-Exupery%2C+1035%2C+Pitimbu%2C+Natal%2C+RN"
+         target="_blank" rel="noopener noreferrer">
+        Localização ↗
+      </a>
+
+      <button class="action" id="dressButton">
+        Dress code ✧
+      </button>
+
+      <a class="action"
+         href="https://share.google/fuHtRIqHE1sdROt7p"
+         target="_blank" rel="noopener noreferrer">
+        Lista de presentes ↗
+      </a>
+
+      <a class="action"
+         href="https://wa.me/5584991186507?text=Ol%C3%A1%21%20Gostaria%20de%20confirmar%20minha%20presen%C3%A7a%20nos%2015%20anos%20de%20Anny%20Lorenna."
+         target="_blank" rel="noopener noreferrer">
+        Confirmar presença pelo WhatsApp
+      </a>
+    </div>
+
+    <div class="footer-note">Uma noite • Mil memórias</div>
+  </div>
+</section>
+
+<!-- JANELA DO DRESS CODE -->
+<div id="dressModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="dressTitle">
+  <div class="modal-box">
+    <div class="eyebrow">Para a nossa noite</div>
+    <h2 id="dressTitle">Dress code</h2>
+    <p>
+      <strong style="color:#fa45c8;font-weight:500;">Traje elegante / Social</strong><br>
+      Evitar tons de rosa e prata!
+    </p>
+    <button id="closeModal" class="close-modal">Entendi</button>
+  </div>
+</div>
+
+<script>
+const screens = [
+  document.getElementById("screen1"),
+  document.getElementById("screen2"),
+  document.getElementById("screen3")
+];
+
+const music = document.getElementById("music");
+const musicControl = document.getElementById("musicControl");
+const enterButton = document.getElementById("enterButton");
+const intro = document.getElementById("screen1");
+
+function showScreen(index) {
+  screens.forEach((screen, i) => {
+    screen.classList.toggle("active", i === index);
+  });
+}
+
+function updateMusicButton() {
+  musicControl.textContent = music.paused ? "♫" : "Ⅱ";
+}
+
+enterButton.addEventListener("click", async () => {
+  intro.classList.add("entered");
+  showScreen(1);
+  musicControl.classList.add("visible");
+
+  try {
+    await music.play();
+  } catch (error) {
+    // Alguns navegadores podem bloquear o áudio; o botão permite tentar novamente.
+  }
+
+  updateMusicButton();
+});
+
+document.getElementById("nextButton").addEventListener("click", () => {
+  showScreen(2);
+});
+
+musicControl.addEventListener("click", async () => {
+  if (music.paused) {
+    try {
+      await music.play();
+    } catch (error) {
+      // O navegador pode exigir uma nova interação para iniciar o áudio.
+    }
+  } else {
+    music.pause();
+  }
+
+  updateMusicButton();
+});
+
+const dressModal = document.getElementById("dressModal");
+
+document.getElementById("dressButton").addEventListener("click", () => {
+  dressModal.classList.add("open");
+});
+
+document.getElementById("closeModal").addEventListener("click", () => {
+  dressModal.classList.remove("open");
+});
+
+dressModal.addEventListener("click", (event) => {
+  if (event.target === dressModal) {
+    dressModal.classList.remove("open");
+  }
+});
+</script>
+
+</body>
+</html>
